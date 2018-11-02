@@ -1,74 +1,89 @@
-<div class="form-group row">
-    {{Form::label('name', 'Название', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('name')) has-error has-feedback @endif">
 
-    <div class="col-md-6">
-        {{Form::text('name', null, ['class' => 'form-control' . ($errors->has('name') ? ' is-invalid' : '')])}}
+    {{Form::label('name', 'Название', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-        @if ($errors->has('name'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('name') }}</strong>
-            </span>
+    <div class="col-lg-5">
+        {{Form::text('name', null, ['class' => 'form-control', 'placeholder' => 'Введите название товара'])}}
+
+        @if($errors->has('name'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('name') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    {{Form::label('price', 'Цена закупочная', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('price')) has-error has-feedback @endif">
 
-    <div class="col-md-2">
-        {{Form::text('price', null, ['class' => 'form-control' . ($errors->has('price') ? ' is-invalid' : '')])}}
-    </div>
-</div>
+    {{Form::label('price', 'Цена закупочная', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-<div class="form-group row">
-    {{Form::label('retail_price', 'Цена розничная', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+    <div class="col-lg-3">
+        {{Form::text('price', null, ['class' => 'form-control', 'placeholder' => 'Формат ввода: 5.5 или 556'])}}
 
-    <div class="col-md-2">
-        {{Form::text('retail_price', null, ['class' => 'form-control' . ($errors->has('retail_price') ? ' is-invalid' : '')])}}
-
-        @if ($errors->has('retail_price'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('retail_price') }}</strong>
-            </span>
+        @if($errors->has('price'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('price') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    {{Form::label('quantity', 'Количество', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('retail_price')) has-error has-feedback @endif">
 
-    <div class="col-md-2 col-lg-2">
-        {{Form::text('quantity', null, ['class' => 'form-control' . ($errors->has('quantity') ? ' is-invalid' : '')])}}
+    {{Form::label('retail_price', 'Цена розничная', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-        @if ($errors->has('quantity'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('quantity') }}</strong>
-            </span>
+    <div class="col-lg-3">
+        {{Form::text('retail_price', null, ['class' => 'form-control', 'placeholder' => 'Формат ввода: 5.5 или 556'])}}
+
+        @if($errors->has('retail_price'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('retail_price') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    {{Form::label('unit', 'Единица', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('quantity')) has-error has-feedback @endif">
 
-    <div class="col-sm-2 col-md-2">
-        {{Form::select('unit', config('sklad.units'), null, ['class' => 'form-control' . ($errors->has('unit') ? ' is-invalid' : '')])}}
+    {{Form::label('quantity', 'Количество', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-        @if ($errors->has('unit'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('unit') }}</strong>
-            </span>
+    <div class="col-lg-3">
+        {{Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => 'Товаров на складе'])}}
+
+        @if($errors->has('quantity'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('quantity') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row mb-0">
-    <div class="col-md-6 offset-md-4">
+<div class="form-group @if($errors->has('unit')) has-error has-feedback @endif">
+    {{Form::label('unit', 'Единица измерения', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
+
+    <div class="col-lg-2">
+        {{Form::select('unit', config('sklad.units'), null, ['class' => 'form-control'])}}
+
+        @if($errors->has('unit'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('unit') }}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-lg-5 col-lg-offset-4">
         <button type="submit" class="btn btn-primary">
-            @isset($product) Изменить @else Добавить @endif
-        </button>
+            @isset($isEdit) Изменить @else Добавить @endisset
+            <i class="icon-arrow-right14 position-right"></i></button>
 
-        <a href="{{route('products.index')}}" class="btn btn-secondary">
+        <a href="{{route('products.index')}}" class="btn btn-default">
             Отменить
         </a>
     </div>

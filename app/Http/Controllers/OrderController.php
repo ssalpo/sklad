@@ -78,9 +78,10 @@ class OrderController extends Controller
      */
     public function edit($id)
     {
-        $order = order::findOrFail($id);
+        $order = Order::with('product')->whereId($id)->first();
+        $products = Product::all();
 
-        return view('orders.edit', compact('order'));
+        return view('orders.edit', compact('order', 'products'));
     }
 
     /**
@@ -92,7 +93,7 @@ class OrderController extends Controller
      */
     public function update(OrderRequest $request, $id)
     {
-        $order = order::findOrFail($id);
+        $order = Order::findOrFail($id);
 
         if (!$order->update($request->all())) {
             return redirect()->back()
@@ -111,7 +112,7 @@ class OrderController extends Controller
      */
     public function destroy($id)
     {
-        $order = order::findOrFail($id);
+        $order = Order::findOrFail($id);
 
         if (!$order->delete()) {
             return redirect()->back()

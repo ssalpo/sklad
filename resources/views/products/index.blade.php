@@ -1,31 +1,36 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card  justify-content-center">
-        <div class="card-header">Список товаров
-            <div class="float-right">Товаров: <b>{{$products->total()}} шт.</b></div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">Список товаров <span
+                        class="badge badge-flat border-danger text-danger-600 position-right">{{$products->total()}}</span>
+            </h5>
         </div>
 
-        <div class="card-body">
+        <div class="panel-body">
+            <a href="{{route('products.create')}}" class="btn btn-success">
+                <i class="icon-cart-add position-left"></i> Добавить товар
+            </a>
+        </div>
 
-            <a href="{{route('products.create')}}" class="btn btn-success mb-3">Добавить товар</a>
-
-            <div class="table-responsive-md">
-                <table class="table table-hover">
+        <div class="table-responsive">
+            <table class="table table-striped">
                 <thead>
                 <tr>
-                    <th scope="col">#ID</th>
-                    <th scope="col">Название</th>
-                    <th scope="col">Цена</th>
-                    <th scope="col">Цена розн.</th>
-                    <th scope="col">Кол-во</th>
-                    <th scope="col" width="80" class="text-center">Действия</th>
+                    <th>#</th>
+                    <th>Название</th>
+                    <th>Цена</th>
+                    <th>Цена розн.</th>
+                    <th>Кол-во</th>
+                    <th class="text-center" width="80">Действия</th>
                 </tr>
                 </thead>
                 <tbody>
+
                 @foreach($products as $product)
                     <tr>
-                        <th scope="row">{{$product->id}}</th>
+                        <th>{{$product->id}}</th>
                         <td>{{$product->name}}</td>
                         <td>{{$product->price}} сом.</td>
                         <td>{{$product->retail_price}} сом.</td>
@@ -35,17 +40,27 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            <a href="{{route('products.edit', $product->id)}}">Ред.</a> |
-                            <a class="text-danger itemDestroyEl" data-url="{{route('products.destroy', $product->id)}}" href="#">Уд.</a>
+                            <ul class="icons-list">
+                                <li class="text-primary-600">
+                                    <a href="{{route('products.edit', $product->id)}}"><i class="icon-pencil7"></i></a>
+                                </li>
+                                <li class="text-danger-600 itemDestroyEl">
+                                    <a href="#" data-url="{{route('products.destroy', $product->id)}}"><i
+                                                class="icon-trash"></i></a>
+                                </li>
+                            </ul>
                         </td>
                     </tr>
                 @endforeach
                 </tbody>
             </table>
-            </div>
-
-            {{$products->links()}}
         </div>
+
+        @if($products->hasPages())
+            <div class="panel-body text-center">
+                {{$products->links()}}
+            </div>
+        @endif
     </div>
 
     @include('_partials.item_delete_form')

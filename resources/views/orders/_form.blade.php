@@ -1,55 +1,75 @@
-<div class="form-group row">
-    {{Form::label('product_id', 'Товар', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('product_id')) has-error has-feedback @endif">
+    {{Form::label('product_id', 'Товар', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-    <div class="col-md-6">
-        {{Form::select('product_id', $products->pluck('name', 'id'), null, ['class' => 'form-control' . ($errors->has('product_id') ? ' is-invalid' : '')])}}
+    <div class="col-lg-5">
+        {{Form::select('product_id', $products->pluck('name', 'id'), null, ['class' => 'form-control'])}}
 
-        @if ($errors->has('product_id'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('product_id') }}</strong>
-            </span>
+        @if($errors->has('product_id'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('product_id') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    {{Form::label('amount', 'Цена продажи', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('amount')) has-error has-feedback @endif">
 
-    <div class="col-md-2">
-        {{Form::text('amount', null, ['class' => 'form-control' . ($errors->has('amount') ? ' is-invalid' : '')])}}
-    </div>
-</div>
+    {{Form::label('amount', 'Цена продажи', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
-<div class="form-group row">
-    {{Form::label('quantity', 'Количество', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+    <div class="col-lg-3">
+        {{Form::text('amount', null, ['class' => 'form-control', 'placeholder' => 'Формат ввода: 5.5 или 556'])}}
 
-    <div class="col-md-2 col-lg-2">
-        {{Form::text('quantity', null, ['class' => 'form-control' . ($errors->has('quantity') ? ' is-invalid' : '')])}}
-
-        @if ($errors->has('quantity'))
-            <span class="invalid-feedback" role="alert">
-                <strong>{{ $errors->first('quantity') }}</strong>
-            </span>
+        @if($errors->has('amount'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('amount') }}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group row">
-    {{Form::label('note', 'Заметка', ['class' => 'col-md-4 col-form-label text-md-right'])}}
+<div class="form-group @if($errors->has('quantity')) has-error has-feedback @endif">
 
-    <div class="col-md-6">
-        {{Form::textarea('note', null, ['class' => 'form-control'])}}
+    {{Form::label('quantity', 'Количество', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
+
+    <div class="col-lg-3">
+        {{Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => 'Сколько продано?'])}}
+
+        @if($errors->has('quantity'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('quantity') }}</span>
+        @endif
     </div>
 </div>
 
-<div class="form-group row mb-0">
-    <div class="col-md-6 offset-md-4">
+<div class="form-group @if($errors->has('note')) has-error has-feedback @endif">
+
+    {{Form::label('note', 'Заметка', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
+
+    <div class="col-lg-5">
+        {{Form::textarea('name', null, ['class' => 'form-control', 'placeholder' => 'Введите название товара', 'rows' => 3])}}
+
+        @if($errors->has('note'))
+            <div class="form-control-feedback">
+                <i class="icon-cancel-circle2"></i>
+            </div>
+            <span class="help-block">{{ $errors->first('note') }}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group">
+    <div class="col-lg-5 col-lg-offset-4">
         <button type="submit" class="btn btn-primary">
-            @isset($order) Изменить @else Добавить @endif
-        </button>
+            @isset($isEdit) Изменить @else Добавить @endisset
+            <i class="icon-arrow-right14 position-right"></i></button>
 
-        <a href="{{route('orders.index')}}" class="btn btn-secondary">
+        <a href="{{route('orders.index')}}" class="btn btn-default">
             Отменить
         </a>
     </div>
 </div>
+

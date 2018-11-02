@@ -1,15 +1,17 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card  justify-content-center">
-        <div class="card-header">Редактирование товара</div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">Редактирование данных проданного товара</h5>
+        </div>
 
-        <div class="card-body">
-            {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put']) !!}
+        <div class="panel-body">
+            {{ Form::model($order, ['route' => ['orders.update', $order->id], 'method' => 'put', 'class' => 'form-horizontal']) }}
 
-            @include('products._form')
+            @include('orders._form')
 
-            {!! Form::close() !!}
+            {{ Form::close() }}
         </div>
     </div>
 @endsection

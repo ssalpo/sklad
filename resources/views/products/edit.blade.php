@@ -5,7 +5,7 @@
         <div class="card-header">Редактирование товара</div>
 
         <div class="card-body">
-            {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put']) !!}
+            {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
             @include('products._form')
 
