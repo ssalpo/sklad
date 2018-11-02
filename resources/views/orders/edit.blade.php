@@ -9,7 +9,7 @@
         <div class="panel-body">
             {{ Form::model($order, ['route' => ['orders.update', $order->id], 'method' => 'put', 'class' => 'form-horizontal']) }}
 
-            @include('orders._form')
+            @include('orders._form', ['isEdit' => true])
 
             {{ Form::close() }}
         </div>

@@ -1,13 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-    <div class="card  justify-content-center">
-        <div class="card-header">Редактирование товара</div>
+    <div class="panel panel-flat">
+        <div class="panel-heading">
+            <h5 class="panel-title">Редактирование товара</h5>
+        </div>
 
-        <div class="card-body">
+        <div class="panel-body">
             {!! Form::model($product, ['route' => ['products.update', $product->id], 'method' => 'put', 'class' => 'form-horizontal']) !!}
 
-            @include('products._form')
+            @include('products._form', ['isEdit' => true])
 
             {!! Form::close() !!}
         </div>

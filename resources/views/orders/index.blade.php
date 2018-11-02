@@ -59,8 +59,8 @@
                                 <li class="text-primary-600">
                                     <a href="{{route('orders.edit', $order->id)}}"><i class="icon-pencil7"></i></a>
                                 </li>
-                                <li class="text-danger-600 itemDestroyEl">
-                                    <a href="#" data-url="{{route('orders.destroy', $order->id)}}"><i
+                                <li class="text-danger-600">
+                                    <a href="#" class="itemDestroyEl" data-url="{{route('orders.destroy', $order->id)}}"><i
                                                 class="icon-trash"></i></a>
                                 </li>
                             </ul>

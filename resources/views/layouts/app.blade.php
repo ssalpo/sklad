@@ -4,8 +4,6 @@
 
     @include('layouts._partials.top_nav')
 
-    @include('_partials.alerts')
-
 @endauth
 
 <!-- Page container -->
@@ -17,12 +15,16 @@
     @auth
         @include('layouts._partials.sidebar')
     @endauth
-        
+
     <!-- Main content -->
         <div class="content-wrapper">
 
             <!-- Content area -->
             <div class="content">
+
+                @auth
+                    @include('_partials.alerts')
+                @endauth
 
                 @yield('content')
 
