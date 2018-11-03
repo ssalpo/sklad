@@ -3,11 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\OrderRequest;
-use App\Order;
-use App\Product;
 use App\Repositories\OrderRepository;
 use App\Repositories\ProductRepository;
-use App\Services\OrderService;
 
 class OrderController extends Controller
 {
@@ -37,7 +34,13 @@ class OrderController extends Controller
         $orders = $this->repository->with('product')
             ->paginate(config('sklad.pagination.limit'));
 
-        return view('orders.index', compact('orders'));
+        $counts = [
+            'todayCount' => $this->repository->todayCount(),
+            'todayEarns' => $this->repository->earnedToday(),
+            'lossToday' => $this->repository->lossToday()
+        ];
+
+        return view('orders.index', compact('orders', 'counts'));
     }
 
     /**

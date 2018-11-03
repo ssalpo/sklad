@@ -12,22 +12,22 @@
             <div class="row text-center">
                 <div class="col-md-4">
                     <div class="content-group">
-                        <h5 class="text-semibold no-margin"><i class="icon-calendar5 position-left text-slate"></i> 10</h5>
+                        <h5 class="text-semibold no-margin"><i class="icon-calendar5 position-left text-slate"></i> {{$ordersCount['today']['todayCount']}}</h5>
                         <span class="text-muted text-size-small">За сегодня</span>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="content-group">
-                        <h5 class="text-semibold no-margin"><i class="icon-cash3 position-left text-slate"></i> 2000 с.</h5>
-                        <span class="text-muted text-size-small">Заработано</span>
+                        <h5 class="text-semibold no-margin"><i class="icon-cash3 position-left text-slate"></i> {{$ordersCount['today']['todayEarns']}} с.</h5>
+                        <span class="text-muted text-size-small">Заработано за сегодня</span>
                     </div>
                 </div>
 
                 <div class="col-md-4">
                     <div class="content-group">
-                        <h5 class="text-semibold no-margin"><i class="icon-cash3 position-left text-slate"></i> 2000 с.</h5>
-                        <span class="text-muted text-size-small">Всего продано</span>
+                        <h5 class="text-semibold no-margin"><i class="icon-cash3 position-left text-slate"></i> {{$ordersCount['today']['lossToday']}} с.</h5>
+                        <span class="text-muted text-size-small">Убытки за сегодня</span>
                     </div>
                 </div>
             </div>
@@ -38,22 +38,34 @@
                 <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Время</th>
-                    <th>Цена</th>
+                    <th>Цена розничная</th>
+                    <th>Цена продажи</th>
+                    <th>Кол-во</th>
+                    <th class="text-center">Ваш заработок</th>
                 </tr>
                 </thead>
                 <tbody>
-                <tr>
-                    <td>
-                        <a href="#" class="text-default text-semibold">Bing campaign</a>
-                    </td>
-                    <td>
-                        <span class="text-muted text-size-small">06:28 pm</span>
-                    </td>
-                    <td>
-                        <h6 class="text-semibold no-margin">$49.90</h6>
-                    </td>
-                </tr>
+                @foreach($orders as $order)
+                    <tr>
+                        <td>
+                            @if($order->product)
+                                {{$order->product->name}}
+                            @else
+                                -
+                            @endif
+                        </td>
+                        <td>{{$order->retail_price}} сом.</td>
+                        <td>{{$order->amount}} сом.</td>
+                        <td>
+                            @if($order->quantity)
+                                {{$order->quantity}} {{config('sklad.units.' . $order->unit)}}
+                            @endif
+                        </td>
+                        <td class="text-center">
+                            {{$order->amount - $order->retail_price}} с.
+                        </td>
+                    </tr>
+                @endforeach
                 </tbody>
             </table>
         </div>

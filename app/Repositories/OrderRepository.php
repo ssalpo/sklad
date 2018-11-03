@@ -2,8 +2,11 @@
 
 namespace App\Repositories;
 
+use App\Criteria\TodayOrdersCriteria;
 use App\Order;
+use Carbon\Carbon;
 use Illuminate\Container\Container as Application;
+use Illuminate\Support\Facades\DB;
 use Prettus\Repository\Eloquent\BaseRepository;
 
 class OrderRepository extends BaseRepository
@@ -35,6 +38,7 @@ class OrderRepository extends BaseRepository
 
         $this->model->forceFill($attributes);
         $this->model->save();
+
         $this->resetModel();
 
         return $this->parserResult($this->model);
@@ -50,7 +54,7 @@ class OrderRepository extends BaseRepository
     private function fillAdditionalAttributes($product, array $attributes)
     {
         if ($product && $product->price && $product->retail_price) {
-            $attributes = array_merge($attributes, $product->only('price', 'retail_price'));
+            $attributes = array_merge($attributes, $product->only('unit', 'price', 'retail_price'));
         }
 
         return $attributes;
@@ -74,5 +78,28 @@ class OrderRepository extends BaseRepository
         }
 
         return null;
+    }
+
+    public function todayCount()
+    {
+        return $this->model
+            ->whereDate('created_at', Carbon::today())
+            ->count();
+    }
+
+    public function earnedToday()
+    {
+        $model = $this->model->whereDate('created_at', Carbon::today())
+            ->whereRaw('amount > retail_price');
+
+        return $model->sum(DB::raw('amount - retail_price'));
+    }
+
+    public function lossToday()
+    {
+        $model = $this->model->whereDate('created_at', Carbon::today())
+            ->whereRaw('amount < retail_price');
+
+        return $model->sum(DB::raw('retail_price - amount'));
     }
 }

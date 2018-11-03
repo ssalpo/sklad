@@ -2,27 +2,39 @@
 
 namespace App\Http\Controllers;
 
-use Illuminate\Http\Request;
+use App\Criteria\TodayOrdersCriteria;
+use App\Repositories\OrderRepository;
 
 class HomeController extends Controller
 {
     /**
-     * Create a new controller instance.
-     *
-     * @return void
+     * @var OrderRepository
      */
-    public function __construct()
+    private $orderRepository;
+
+    public function __construct(OrderRepository $orderRepository)
     {
-        $this->middleware('auth');
+        $this->orderRepository = $orderRepository;
     }
 
     /**
-     * Show the application dashboard.
+     * Страница статистики
      *
      * @return \Illuminate\Http\Response
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index()
     {
-        return view('home');
+        $ordersCount = [
+            'today' => [
+                'todayCount' => $this->orderRepository->todayCount(),
+                'todayEarns' => $this->orderRepository->earnedToday(),
+                'lossToday' => $this->orderRepository->lossToday()
+            ]
+        ];
+
+        $orders = $this->orderRepository->pushCriteria(new TodayOrdersCriteria())->all();
+
+        return view('home', compact('ordersCount', 'orders'));
     }
 }
