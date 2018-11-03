@@ -5,45 +5,55 @@ namespace App\Http\Controllers;
 use App\Http\Requests\OrderRequest;
 use App\Order;
 use App\Product;
+use App\Repositories\OrderRepository;
+use App\Repositories\ProductRepository;
 use App\Services\OrderService;
 
 class OrderController extends Controller
 {
-    protected $orderService;
+    /**
+     * @var OrderRepository
+     */
+    private $repository;
 
-    public function __construct(OrderService $orderService)
+    /**
+     * @var ProductRepository
+     */
+    private $productRepository;
+
+    public function __construct(OrderRepository $repository, ProductRepository $productRepository)
     {
-        $this->orderService = $orderService;
-
-        $this->middleware('auth');
+        $this->repository = $repository;
+        $this->productRepository = $productRepository;
     }
 
     /**
-     * Display a listing of the resource.
+     * Показывает страницу всех проданных товаров
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $orders = Order::with('product')->paginate(config('sklad.pagination.limit'));
+        $orders = $this->repository->with('product')
+            ->paginate(config('sklad.pagination.limit'));
 
         return view('orders.index', compact('orders'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показывает форма учета проданного товара
      *
      * @return \Illuminate\Http\Response
      */
     public function create()
     {
-        $products = Product::all();
+        $products = $this->productRepository->all();
 
         return view('orders.create', compact('products'));
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Добавляет информацию о новой покупке в базу
      *
      * @param  OrderRequest $request
      * @return \Illuminate\Http\Response
@@ -51,75 +61,89 @@ class OrderController extends Controller
      */
     public function store(OrderRequest $request)
     {
-        $order = $this->orderService->create(
-            $request->all()
+        $isRightQuantity = $this->repository->checkOrderQuantity(
+            $request->get('product_id'), $request->get('quantity')
         );
 
-        return redirect()->route('orders.index')
+        if (!is_null($isRightQuantity)) {
+            return redirect()
+                ->back()
+                ->withInput()
+                ->with('error', $isRightQuantity);
+        }
+
+        $this->repository->create($request->all());
+
+        return redirect()
+            ->route('orders.index')
             ->with('success', 'Заказ оформлен!');
     }
 
     /**
-     * Display the specified resource.
+     * Показывает информацию о конкретном заказе
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $order = $this->repository
+            ->with('product')
+            ->find($id);
+
+        return view('products.show', compact('order'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Редактирование информации о заказе
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $order = Order::with('product')->whereId($id)->first();
-        $products = Product::all();
+        $order = $this->repository
+            ->with('product')
+            ->find($id);
+
+        $products = $this->productRepository->all();
 
         return view('orders.edit', compact('order', 'products'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновление данных заказа в базе
      *
      * @param  OrderRequest $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(OrderRequest $request, $id)
     {
-        $order = Order::findOrFail($id);
+        $order = $this->repository->update($request->all(), $id);
 
-        if (!$order->update($request->all())) {
-            return redirect()->back()
-                ->with('error', 'Ошибка при обновлении продукта');
-        }
+        $message = 'Данные заказа успешно обновлен!';
 
-        return redirect()->route('orders.index')
-            ->with('success', 'Продукт <b>' . $order->name . '</b> успешно обновлен!');
+        return redirect()
+            ->route('orders.index')
+            ->with('success', $message);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаление данных о заказе
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $order = Order::findOrFail($id);
+        $this->repository->delete($id);
 
-        if (!$order->delete()) {
-            return redirect()->back()
-                ->with('error', 'Ошибка при удалении продукта');
-        }
+        $message = 'Заказ успешно удален!';
 
-        return redirect()->route('orders.index')
-            ->with('success', 'Продукт <b>' . $order->name . '</b> успешно удален!');
+        return redirect()
+            ->route('orders.index')
+            ->with('success', $message);
     }
 }

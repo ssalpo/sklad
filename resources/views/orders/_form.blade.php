@@ -50,7 +50,7 @@
     {{Form::label('note', 'Заметка', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
     <div class="col-lg-5">
-        {{Form::textarea('name', null, ['class' => 'form-control', 'placeholder' => 'Введите название товара', 'rows' => 3])}}
+        {{Form::textarea('note', null, ['class' => 'form-control', 'placeholder' => 'Введите название товара', 'rows' => 3])}}
 
         @if($errors->has('note'))
             <div class="form-control-feedback">

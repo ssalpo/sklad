@@ -19,8 +19,6 @@ class Product extends Model
         'unit'
     ];
 
-    protected $guarded = ['created_by', 'edited_by'];
-
     protected $dates = ['deleted_at'];
 
     public function orders()

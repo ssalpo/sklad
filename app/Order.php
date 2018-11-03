@@ -21,7 +21,6 @@ class Order extends Model
     protected $guarded = [
         'price',
         'retail_price',
-        'created_by',
         'unit'
     ];
 

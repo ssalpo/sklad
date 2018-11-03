@@ -4,29 +4,35 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\ProductRequest;
 use App\Product;
+use App\Repositories\ProductRepository;
 use Illuminate\Http\Request;
 
 class ProductController extends Controller
 {
-    public function __construct()
+    /**
+     * @var ProductRepository
+     */
+    private $repository;
+
+    public function __construct(ProductRepository $repository)
     {
-        $this->middleware('auth');
+        $this->repository = $repository;
     }
 
     /**
-     * Display a listing of the resource.
+     * Выводит список всех товаров
      *
      * @return \Illuminate\Http\Response
      */
     public function index()
     {
-        $products = Product::paginate(config('sklad.pagination.limit'));
+        $products = $this->repository->paginate(config('sklad.pagination.limit'));
 
         return view('products.index', compact('products'));
     }
 
     /**
-     * Show the form for creating a new resource.
+     * Показывает форму добавления нового товара
      *
      * @return \Illuminate\Http\Response
      */
@@ -36,84 +42,80 @@ class ProductController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Добавляет новый товар в базу
      *
      * @param  ProductRequest $request
      * @return \Illuminate\Http\Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function store(ProductRequest $request)
     {
-        $product = Product::create($request->all());
+        $product = $this->repository->create($request->all());
 
-        if (!$product) {
-            return redirect()->back()
-                ->with('error', 'Ошибка при добавлении нового продукта');
-        }
+        $message = "Новый товар <b>" . $product->name . "</b> успешно добавлен!";
 
-        return redirect()->route('products.index')
-            ->with('success', 'Новый продукт <b>' . $product->name . '</b> успешно создан!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', $message);
     }
 
     /**
-     * Display the specified resource.
+     * Просмотрых всех данных товара
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function show($id)
     {
-        //
+        $product = $this->repository->find($id);
+
+        return view('products.show', compact('product'));
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Показывает форму редактирования товара
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
-        $product = Product::findOrFail($id);
+        $product = $this->repository->find($id);
 
         return view('products.edit', compact('product'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Обновление данных товара в базе
      *
      * @param  ProductRequest $request
      * @param  int $id
      * @return \Illuminate\Http\Response
+     * @throws \Prettus\Validator\Exceptions\ValidatorException
      */
     public function update(ProductRequest $request, $id)
     {
-        $product = Product::findOrFail($id);
+        $product = $this->repository->update($request->all(), $id);
 
-        if (!$product->update($request->all())) {
-            return redirect()->back()
-                ->with('error', 'Ошибка при обновлении продукта');
-        }
+        $message = 'Продукт <b>' . $product->name . '</b> успешно обновлен!';
 
-        return redirect()->route('products.index')
-            ->with('success', 'Продукт <b>' . $product->name . '</b> успешно обновлен!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', $message);
     }
 
     /**
-     * Remove the specified resource from storage.
+     * Удаляет товар из базы
      *
      * @param  int $id
      * @return \Illuminate\Http\Response
      */
     public function destroy($id)
     {
-        $product = Product::findOrFail($id);
+        $this->repository->delete($id);
 
-        if (!$product->delete()) {
-            return redirect()->back()
-                ->with('error', 'Ошибка при удалении продукта');
-        }
-
-        return redirect()->route('products.index')
-            ->with('success', 'Продукт <b>' . $product->name . '</b> успешно удален!');
+        return redirect()
+            ->route('products.index')
+            ->with('success', 'Товар успешно удален!');
     }
 }

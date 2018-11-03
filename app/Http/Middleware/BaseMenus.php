@@ -30,7 +30,7 @@ class BaseMenus
                 ->prepend('<i class="icon-cart-add2"></i> ')
                 ->active('products/*');
 
-            $menu->add('<span>Пользователи</span>')
+            $menu->add('<span>Пользователи</span>', ['route' => 'users.index'])
                 ->prepend('<i class="icon-users4"></i> ')
                 ->active('users/*');
         });
