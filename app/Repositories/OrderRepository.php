@@ -38,7 +38,7 @@ class OrderRepository extends BaseRepository
 
         $this->model->forceFill($attributes);
         $this->model->save();
-
+        
         $this->resetModel();
 
         return $this->parserResult($this->model);
