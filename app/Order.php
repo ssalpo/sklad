@@ -4,10 +4,11 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Wildside\Userstamps\Userstamps;
 
 class Order extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Userstamps;
 
     protected $table = "orders";
 
@@ -20,7 +21,7 @@ class Order extends Model
 
     protected $guarded = [
         'price',
-        'retail_price',
+        'purchase_price',
         'unit'
     ];
 

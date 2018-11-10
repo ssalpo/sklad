@@ -19,7 +19,7 @@
     {{Form::label('email', 'E-mail', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
     <div class="col-lg-5">
-        {{Form::text('email', null, ['class' => 'form-control', 'placeholder' => 'Введите email к примеру: sanjar@tpu.ru'])}}
+        {{Form::text('email', null, ['class' => 'form-control email-input', 'placeholder' => 'Введите email к примеру: sanjar@tpu.ru'])}}
 
         @if($errors->has('email'))
             <div class="form-control-feedback">

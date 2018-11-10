@@ -24,7 +24,7 @@
                         <h5 class="text-semibold no-margin"><i
                                     class="icon-calendar5 position-left text-slate"></i> {{array_get($counts, 'todayCount')}}
                         </h5>
-                        <span class="text-muted text-size-small">За сегодня</span>
+                        <span class="text-muted text-size-small">За сегодня продано</span>
                     </div>
                 </div>
 
@@ -33,7 +33,7 @@
                         <h5 class="text-semibold no-margin"><i
                                     class="icon-cash3 position-left text-slate"></i> {{array_get($counts, 'todayEarns')}}
                             с.</h5>
-                        <span class="text-muted text-size-small">За сегодня</span>
+                        <span class="text-muted text-size-small">За сегодня заработок</span>
                     </div>
                 </div>
 
@@ -58,7 +58,7 @@
                 <tr>
                     <th>#</th>
                     <th>Товар</th>
-                    <th>Цена розн.</th>
+                    <th>Цена</th>
                     <th>Цена прод.</th>
                     <th class="text-center">Кол-во</th>
                     <th class="text-center">Ваш заработок</th>
@@ -77,13 +77,13 @@
                                 -
                             @endif
                         </td>
-                        <td>{{$order->retail_price}} сом.</td>
+                        <td>{{$order->price}} сом.</td>
                         <td>{{$order->amount}} сом.</td>
                         <td class="text-center">
                             {{$order->quantity}} {{config('sklad.units.' . $order->unit)}}
                         </td>
                         <td class="text-center">
-                            {{$order->amount - $order->retail_price}} с.
+                            {{($order->amount - $order->price) * $order->quantity}} с.
                         </td>
                         <td class="text-center">
                             <ul class="icons-list">

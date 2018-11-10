@@ -33,7 +33,7 @@
                         <th>{{$product->id}}</th>
                         <td>{{$product->name}}</td>
                         <td>{{$product->price}} сом.</td>
-                        <td>{{$product->retail_price}} сом.</td>
+                        <td>{{$product->purchase_price}} сом.</td>
                         <td>
                             @if($product->quantity)
                                 {{$product->quantity}} {{config('sklad.units.' . $product->unit)}}

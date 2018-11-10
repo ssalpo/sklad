@@ -21,9 +21,9 @@ class CreateOrdersTable extends Migration
                 ->references('id')->on('products')
                 ->onDelete('cascade');
 
-            $table->double('price'); // цена закупочная
-            $table->double('retail_price'); // цена розничная
-            $table->double('amount')->default(0);
+            $table->decimal('price', 15, 2)->default(0.00); // цена обычная
+            $table->decimal('purchase_price', 15, 2)->default(0.00); // цена покупки
+            $table->decimal('amount', 15, 2)->default(0.00);
             $table->integer('quantity')->default(0);
             $table->string('unit', 10)->default(0);
             $table->text('note')->nullable();

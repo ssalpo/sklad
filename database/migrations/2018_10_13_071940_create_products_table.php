@@ -17,8 +17,8 @@ class CreateProductsTable extends Migration
             $table->increments('id');
 
             $table->text('name');
-            $table->double('price'); // цена закупочная
-            $table->double('retail_price'); // цена розничная
+            $table->decimal('price', 15, 2)->default(0.00); // цена закупочная
+            $table->decimal('purchase_price', 15, 2)->default(0.00); // цена покупки
             $table->integer('quantity')->default(0); // количество
             $table->string('unit', 10)->nullable(); // единица измерения
 

@@ -31,7 +31,9 @@ class OrderController extends Controller
      */
     public function index()
     {
-        $orders = $this->repository->with('product')
+        $orders = $this->repository
+            ->with('product')
+            ->orderBy('created_at', 'desc')
             ->paginate(config('sklad.pagination.limit'));
 
         $counts = [

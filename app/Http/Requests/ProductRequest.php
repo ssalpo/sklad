@@ -25,8 +25,8 @@ class ProductRequest extends FormRequest
     {
         $rules = [
             'name' => 'required',
-            'price' => 'required|numeric',
-            'retail_price' => 'required|numeric'
+            'price' => 'required|regex:/^\d{1,15}(\.\d{1,4})?$/',
+            'purchase_price' => 'required|regex:/^\d{1,15}(\.\d{1,4})?$/'
         ];
 
         if($this->request->get('quantity')) {

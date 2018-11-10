@@ -4,17 +4,18 @@ namespace App;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Wildside\Userstamps\Userstamps;
 
 class Product extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, Userstamps;
 
     protected $table = "products";
 
     protected $fillable = [
         'name',
         'price',
-        'retail_price',
+        'purchase_price',
         'quantity',
         'unit'
     ];

@@ -38,7 +38,7 @@ class OrderRepository extends BaseRepository
 
         $this->model->forceFill($attributes);
         $this->model->save();
-        
+
         $this->resetModel();
 
         return $this->parserResult($this->model);
@@ -53,8 +53,8 @@ class OrderRepository extends BaseRepository
      */
     private function fillAdditionalAttributes($product, array $attributes)
     {
-        if ($product && $product->price && $product->retail_price) {
-            $attributes = array_merge($attributes, $product->only('unit', 'price', 'retail_price'));
+        if ($product) {
+            $attributes = array_merge($attributes, $product->only('unit', 'price', 'purchase_price'));
         }
 
         return $attributes;
@@ -90,16 +90,16 @@ class OrderRepository extends BaseRepository
     public function earnedToday()
     {
         $model = $this->model->whereDate('created_at', Carbon::today())
-            ->whereRaw('amount > retail_price');
+            ->whereRaw('amount > price');
 
-        return $model->sum(DB::raw('amount - retail_price'));
+        return $model->sum(DB::raw('(amount - price) * quantity'));
     }
 
     public function lossToday()
     {
         $model = $this->model->whereDate('created_at', Carbon::today())
-            ->whereRaw('amount < retail_price');
+            ->whereRaw('amount < price');
 
-        return $model->sum(DB::raw('retail_price - amount'));
+        return $model->sum(DB::raw('(price - amount) * quantity'));
     }
 }

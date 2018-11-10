@@ -18,7 +18,7 @@
     {{Form::label('amount', 'Цена продажи', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
     <div class="col-lg-3">
-        {{Form::text('amount', null, ['class' => 'form-control', 'placeholder' => 'Формат ввода: 5.5 или 556'])}}
+        {{Form::text('amount', null, ['class' => 'form-control price-input', 'placeholder' => 'Формат ввода: 5.5 или 556'])}}
 
         @if($errors->has('amount'))
             <div class="form-control-feedback">
@@ -34,7 +34,7 @@
     {{Form::label('quantity', 'Количество', ['class' => 'control-label col-lg-2 col-lg-offset-2'])}}
 
     <div class="col-lg-3">
-        {{Form::text('quantity', null, ['class' => 'form-control', 'placeholder' => 'Сколько продано?'])}}
+        {{Form::text('quantity', null, ['class' => 'form-control number-input', 'placeholder' => 'Сколько продано?'])}}
 
         @if($errors->has('quantity'))
             <div class="form-control-feedback">

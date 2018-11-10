@@ -4,6 +4,8 @@
 <script type="text/javascript" src="{{asset('assets/js/core/libraries/jquery.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/js/core/libraries/bootstrap.min.js')}}"></script>
 <script type="text/javascript" src="{{asset('assets/js/plugins/loaders/blockui.min.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/plugins/inputmask/inputmask.js')}}"></script>
+<script type="text/javascript" src="{{asset('js/plugins/jquery-money/jquery.Money.js')}}"></script>
 <!-- /core JS files -->
 
 <!-- Theme JS files -->

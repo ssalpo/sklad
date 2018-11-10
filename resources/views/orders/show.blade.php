@@ -20,8 +20,8 @@
                     <td>{{$product->price}}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Цена розничная</th>
-                    <td>{{$product->retail_price}}</td>
+                    <th scope="row">Цена покупки</th>
+                    <td>{{$product->purchase_price}}</td>
                 </tr>
                 <tr>
                     <th scope="row">Количество</th>

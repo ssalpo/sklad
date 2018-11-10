@@ -38,7 +38,7 @@
                 <thead>
                 <tr>
                     <th>Название</th>
-                    <th>Цена розничная</th>
+                    <th>Цена</th>
                     <th>Цена продажи</th>
                     <th>Кол-во</th>
                     <th class="text-center">Ваш заработок</th>
@@ -54,7 +54,7 @@
                                 -
                             @endif
                         </td>
-                        <td>{{$order->retail_price}} сом.</td>
+                        <td>{{$order->price}} сом.</td>
                         <td>{{$order->amount}} сом.</td>
                         <td>
                             @if($order->quantity)
@@ -62,7 +62,7 @@
                             @endif
                         </td>
                         <td class="text-center">
-                            {{$order->amount - $order->retail_price}} с.
+                            {{($order->amount - $order->price) * $order->quantity}} с.
                         </td>
                     </tr>
                 @endforeach
