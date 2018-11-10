@@ -1,9 +1,7 @@
 @include('layouts._partials.header')
 
 @auth
-
     @include('layouts._partials.top_nav')
-
 @endauth
 
 <!-- Page container -->
@@ -12,12 +10,16 @@
     <!-- Page content -->
     <div class="page-content">
 
-    @auth
-        @include('layouts._partials.sidebar')
-    @endauth
-
-    <!-- Main content -->
+        <!-- Main content -->
         <div class="content-wrapper">
+
+            @auth
+                <div class="page-header page-header-default">
+                    <div class="breadcrumb-line">
+                        {{ Breadcrumbs::render() }}
+                    </div>
+                </div>
+            @endauth
 
             <!-- Content area -->
             <div class="content">

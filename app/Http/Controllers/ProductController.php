@@ -75,13 +75,11 @@ class ProductController extends Controller
     /**
      * Показывает форму редактирования товара
      *
-     * @param  int $id
+     * @param Product $product
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit(Product $product)
     {
-        $product = $this->repository->find($id);
-
         return view('products.edit', compact('product'));
     }
 

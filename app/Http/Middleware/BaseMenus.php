@@ -9,15 +9,15 @@ class BaseMenus
     /**
      * Handle an incoming request.
      *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  \Closure  $next
+     * @param  \Illuminate\Http\Request $request
+     * @param  \Closure $next
      * @return mixed
      */
     public function handle($request, Closure $next)
     {
 
         // Main sidebar elements
-        \Menu::make('sidebar', function ($menu) {
+        \Menu::make('topMenu', function ($menu) {
 
             $menu->add('<span>Статистка</span>', ['route' => 'home'])
                 ->prepend('<i class="icon-pie5"></i> ');
@@ -30,9 +30,19 @@ class BaseMenus
                 ->prepend('<i class="icon-cart-add2"></i> ')
                 ->active('products/*');
 
-            $menu->add('<span>Пользователи</span>', ['route' => 'users.index'])
-                ->prepend('<i class="icon-users4"></i> ')
-                ->active('users/*');
+            $menu->add('Управление', ['route' => 'users.index'])
+                ->prepend('<i class="icon-collaboration"></i> ')
+                ->active('control/*')
+                ->nickname('control');
+
+                $menu->item('control')
+                    ->add('<span>Пользователи</span>', ['route' => 'users.index'])
+                    ->prepend('<i class="icon-users4"></i> ')
+                    ->active('control/users/*');
+
+                $menu->item('control')
+                    ->add('<span>Настройки</span>', '#')
+                    ->prepend('<i class="icon-cogs"></i>');
         });
 
         return $next($request);

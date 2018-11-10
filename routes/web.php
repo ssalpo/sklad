@@ -12,5 +12,10 @@ $this->group(['middleware' => 'auth'], function () {
 
     $this->resource('products', 'ProductController');
     $this->resource('orders', 'OrderController');
-    $this->resource('users', 'UserController', ['except' => 'show']);
+
+
+    $this->group(['prefix' => 'control'], function () {
+        $this->resource('users', 'UserController', ['except' => 'show']);
+    });
+
 });

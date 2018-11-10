@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\UserRequest;
 use App\Repositories\UserRepository;
+use App\User;
 use Wildside\Userstamps\Userstamps;
 
 class UserController extends Controller
@@ -64,10 +65,8 @@ class UserController extends Controller
      * @param $user
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      */
-    public function edit($user)
+    public function edit(User $user)
     {
-        $user = $this->repository->find($user);
-
         return view('users.edit', compact('user'));
     }
 
